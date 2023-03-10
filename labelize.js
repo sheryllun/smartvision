@@ -36,8 +36,6 @@ fs.readFile(file, 'base64', (err, data) => {
 
 function parseResults(results) {
   let searchTerms = [
-    "Human",
-    "Person",
     "People",
     "Male",
     "Female",
@@ -51,7 +49,11 @@ function parseResults(results) {
   ];
   let foundTerms = [];
   results.map((result) => {
-    if (searchTerms.indexOf(result.Name) >= 0) {
+    if (
+      searchTerms.indexOf(result.Name) >= 0 ||
+      ((result.Name === "Person" || result.Name === "Human") &&
+        result.Confidence > 95)
+    ) {
       let confidence = result.Confidence.toFixed(2);
       let label = `${result.Name} ${confidence}%`;
       foundTerms.push(label);
